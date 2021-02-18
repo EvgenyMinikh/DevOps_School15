@@ -1,0 +1,4 @@
+---
+# defaults file for install_vsftpd
+ftp_root: /var/ftp/pub/upload
+is_allow_anonymous_access: YES

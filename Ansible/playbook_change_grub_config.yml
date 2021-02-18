@@ -1,0 +1,12 @@
+---
+- name: Configuring NetworkManager service
+  hosts: node1
+  become: yes
+  
+  tasks:
+    - name: Change grub file
+      lineinfile:
+        path: /tmp/grub_test
+        regexp: '^GRUB_CMDLINE_LINUX=.+net\.ifnames=0 biosdevname=0.+'
+        state: present
+      check_mode: yes

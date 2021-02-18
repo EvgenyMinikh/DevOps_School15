@@ -1,0 +1,29 @@
+- name: Remove httpd and index.html
+  hosts: node1
+  become: yes
+  
+  tasks:
+    - name: Stop httpd service
+      service:
+        name: httpd
+        enabled: no
+        state: stopped
+    
+    - name: Remove index.html
+      file:
+        path: /var/www/html/index.html
+        state: absent
+        
+    - name: Uninstall httpd service
+      yum:
+        autoremove: yes
+        name: httpd
+        state: absent
+        
+    - name: Cofiguring firewall
+      firewalld:
+        service: http
+        zone: public
+        immediate: yes
+        state: disabled
+        permanent: true

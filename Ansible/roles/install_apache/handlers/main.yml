@@ -1,0 +1,12 @@
+---
+# handlers file for install_apache
+- name: Start httpd service
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+    
+- name: Restart httpd service
+  service:
+    name: httpd
+    state: restarted

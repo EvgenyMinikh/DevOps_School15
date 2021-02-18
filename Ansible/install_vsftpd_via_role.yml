@@ -1,0 +1,7 @@
+---
+- name: Install FTP Server
+  hosts: node2
+  become: yes
+
+  roles:
+    - install_vsftpd 

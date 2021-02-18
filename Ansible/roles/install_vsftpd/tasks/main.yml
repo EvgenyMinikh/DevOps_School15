@@ -1,0 +1,39 @@
+---
+# tasks file for install_vsftpd
+- name: Install ftp service
+  yum:
+    name: vsftpd
+    state: latest
+  notify:
+    - Start vsftpd service
+    - Create chroot directory
+
+- name: Create vsftpd.conf file using template
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd/vsftpd.conf
+    force: yes
+    backup: yes
+  notify:
+    - Restart vsftpd service
+
+- name: Cofiguring firewall
+  firewalld:
+    service: ftp
+    zone: public
+    immediate: yes
+    state: enabled
+    permanent: true
+
+
+- name: Set SELinux context
+  seboolean:
+    name: ftpd_anon_write
+    state: yes
+    persistent: yes
+  
+- name: Set SELinux context on the folder
+  sefcontext:
+    target: "{{ ftp_root }}"
+    setype: public_content_rw_t
+    state: present

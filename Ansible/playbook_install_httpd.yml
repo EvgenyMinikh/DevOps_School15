@@ -1,0 +1,40 @@
+---
+- name: Install HTTP server
+  hosts: node1
+  become: yes
+
+  tasks:
+    - name: Install httpd service
+      yum:
+        name: httpd
+        state: latest
+      notify:
+        - Start httpd service
+
+    - name: Copy index.html file to remote node
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/index.html
+      notify:
+        - Restart httpd service
+
+    - name: Cofiguring firewall
+      firewalld:
+        service: http
+        zone: public
+        immediate: yes
+        state: enabled
+        permanent: true
+
+
+  handlers:
+    - name: Start httpd service
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+
+    - name: Restart httpd service
+      service:
+        name: httpd
+        state: restarted

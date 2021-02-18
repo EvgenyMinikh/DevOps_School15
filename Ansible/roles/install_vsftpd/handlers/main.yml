@@ -1,0 +1,20 @@
+---
+# handlers file for install_vsftpd
+- name: Create chroot directory
+  file:
+    state: directory
+    path: "{{ ftp_root }}"
+    mode: '0777'
+
+
+- name: Start vsftpd service
+  service:
+    name: vsftpd
+    enabled: yes
+    state: started
+
+
+- name: Restart vsftpd service
+  service:
+    name: vsftpd
+    state: restarted

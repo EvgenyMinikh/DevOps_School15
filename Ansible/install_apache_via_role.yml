@@ -1,0 +1,8 @@
+---
+- name: Install HTTP server
+  hosts: node1
+  become: yes
+
+  roles:
+    - install_apache
+...
